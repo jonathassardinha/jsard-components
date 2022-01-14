@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import IconButton from "components/IconButton";
+import { memo } from "react";
 import styled from "styled-components";
 
 interface WrapperProps {
@@ -43,8 +43,12 @@ export const InputWrapper = styled.div<WrapperProps>`
 
   .chevron {
     margin-left: 8px;
-    transition: all 150ms ease;
-    transform: ${({ open }) => (open ? "rotate(180deg)" : "rotate(0deg)")};
+    transform: rotate(0deg);
+    transition: all 250ms ease;
+
+    &.open {
+      transform: rotate(180deg);
+    }
   }
 
   &:hover {
@@ -56,6 +60,6 @@ export const Label = styled.label`
   margin-bottom: 8px;
 `;
 
-export const CloseButton = styled(IconButton)`
+export const ResetButton = memo(styled(IconButton)`
   margin-left: 8px;
-`;
+`);

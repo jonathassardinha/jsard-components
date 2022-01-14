@@ -4,6 +4,7 @@ import Dropdown from "..";
 import { DropdownProps } from "../Dropdown";
 
 const defaultProps: DropdownProps = {
+  name: "Test name",
   label: "Test label",
   placeholder: "Test placeholder",
   options: ["Option 1", "Option 2"],
@@ -27,7 +28,7 @@ describe("<Dropdown />", () => {
     userEvent.click(div);
     expect(screen.getByText("Option 1")).toBeInTheDocument();
     expect(screen.getByText("Option 2")).toBeInTheDocument();
-    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
 
     const option1 = screen.getByText("Option 1");
     userEvent.click(option1);
@@ -36,12 +37,13 @@ describe("<Dropdown />", () => {
     ).not.toBeInTheDocument();
     expect(screen.getByText("Option 1")).toBeInTheDocument();
     expect(screen.queryByText("Option 2")).not.toBeInTheDocument();
-    expect(screen.getByRole("img")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toBeInTheDocument();
 
-    const closeButton = screen.getByRole("img");
+    const closeButton = screen.getByRole("button");
     userEvent.click(closeButton);
     expect(screen.getByText(defaultProps.placeholder)).toBeInTheDocument();
     expect(screen.queryByText("Option 1")).not.toBeInTheDocument();
     expect(screen.queryByText("Option 2")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 });

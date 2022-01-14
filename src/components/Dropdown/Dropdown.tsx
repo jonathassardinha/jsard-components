@@ -1,6 +1,5 @@
 import { faChevronDown, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import IconButton from "components/IconButton";
 import React, { useState } from "react";
 
 import Options from "./Options";
@@ -9,16 +8,17 @@ import {
   DropdownWrapper,
   InputWrapper,
   Label,
-  CloseButton,
+  ResetButton,
 } from "./styles";
 
 export interface DropdownProps {
+  name: string;
   label: string;
   placeholder: string;
   options: Array<string>;
 }
 
-function Dropdown({ placeholder, label, options }: DropdownProps) {
+function Dropdown({ name, placeholder, label, options }: DropdownProps) {
   const [optionsOpen, setOptionsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>("");
 
@@ -32,12 +32,8 @@ function Dropdown({ placeholder, label, options }: DropdownProps) {
   };
 
   const handleBlur = (event: React.FocusEvent) => {
-    setOptionsOpen(false);
-    console.log(
-      event.currentTarget,
-      event.relatedTarget,
-      event.currentTarget.contains(event.relatedTarget)
-    );
+    if (!event.currentTarget.contains(event.relatedTarget))
+      setOptionsOpen(false);
   };
 
   const handleClick = () => {
@@ -65,14 +61,17 @@ function Dropdown({ placeholder, label, options }: DropdownProps) {
           >
             {selectedValue ? selectedValue : placeholder}
           </span>
-          <input value={selectedValue} onChange={() => {}} />
-          <FontAwesomeIcon className="chevron" icon={faChevronDown} />
+          <input value={selectedValue} onChange={() => {}} name={name} />
+          <FontAwesomeIcon
+            className={`chevron ${optionsOpen && "open"}`}
+            icon={faChevronDown}
+          />
           {optionsOpen && (
             <Options options={options} onOptionSelect={setSelectedValue} />
           )}
         </InputWrapper>
         {!!selectedValue && (
-          <CloseButton icon={faTimes} onClick={handleDeselect} />
+          <ResetButton icon={faTimes} onClick={handleDeselect} />
         )}
       </DropdownWrapper>
     </Wrapper>
