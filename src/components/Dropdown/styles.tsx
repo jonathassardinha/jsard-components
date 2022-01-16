@@ -24,7 +24,6 @@ export const InputWrapper = styled.div<WrapperProps>`
   justify-content: space-between;
   padding: 8px;
   border: 1px solid ${({ open }) => (open ? "black" : "lightgray")};
-  border-radius: 8px;
   cursor: pointer;
   transition: all 250ms ease;
   width: fit-content;

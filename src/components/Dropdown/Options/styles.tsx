@@ -10,7 +10,6 @@ export const OptionsWrapper = styled.div`
   background-color: white;
   z-index: 10;
   box-shadow: 0px 0px 4px gray;
-  border-radius: 8px;
   transition: all 250ms ease;
 `;
 
