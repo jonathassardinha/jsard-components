@@ -5,7 +5,6 @@ export const ButtonWrapper = styled.button`
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 50%;
   height: 32px;
   width: 32px;
   background: transparent;
