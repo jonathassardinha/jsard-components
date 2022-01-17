@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const OptionsWrapper = styled.div`
+export interface OptionsWrapperProps {
+  $open: boolean;
+}
+
+export const OptionsWrapper = styled.ul<OptionsWrapperProps>`
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
@@ -11,9 +15,11 @@ export const OptionsWrapper = styled.div`
   z-index: 10;
   box-shadow: 0px 0px 4px gray;
   transition: all 250ms ease;
+  list-style: none;
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
 `;
 
-export const OptionWrapper = styled.div`
+export const OptionWrapper = styled.li`
   padding: 8px;
 
   &:hover,
