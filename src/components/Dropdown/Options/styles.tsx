@@ -16,7 +16,7 @@ export const OptionsWrapper = styled.ul<OptionsWrapperProps>`
   box-shadow: 0px 0px 4px gray;
   transition: all 250ms ease;
   list-style: none;
-  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  opacity: ${({ $open }) => ($open ? "1" : "0")};
 `;
 
 export const OptionWrapper = styled.li`
