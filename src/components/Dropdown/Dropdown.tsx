@@ -1,6 +1,6 @@
 import { faChevronDown, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { MouseEvent, useRef, useState } from "react";
 
 import Options from "./Options";
 import {
@@ -16,28 +16,47 @@ export interface DropdownProps {
   label: string;
   placeholder: string;
   options: Array<string>;
+  required?: boolean;
 }
 
-function Dropdown({ name, placeholder, label, options }: DropdownProps) {
+function Dropdown({
+  name,
+  placeholder,
+  label,
+  options,
+  required,
+}: DropdownProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const optionsRef = useRef<HTMLLIElement>(null);
   const [optionsOpen, setOptionsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>("");
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") setOptionsOpen(false);
-    else if (e.key === "Enter") setOptionsOpen((state) => !state);
-    else if (e.key === " " || e.key === "Spacebar") {
+    else if (e.key === "Enter") {
       setOptionsOpen((state) => !state);
+      if (!optionsOpen) optionsRef.current?.focus();
+    } else if (e.key === " " || e.key === "Spacebar") {
+      setOptionsOpen((state) => !state);
+      if (!optionsOpen) optionsRef.current?.focus();
     }
-    console.log(e.key);
   };
 
   const handleBlur = (event: React.FocusEvent) => {
-    if (!event.currentTarget.contains(event.relatedTarget))
+    if (!event.currentTarget.contains(event.relatedTarget)) {
       setOptionsOpen(false);
+    }
   };
 
-  const handleClick = () => {
+  const handleInputFocus = () => {
+    setOptionsOpen(true);
+    optionsRef.current?.focus();
+  };
+
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     setOptionsOpen((state) => !state);
+    if (!optionsOpen && !(event.target instanceof HTMLLIElement))
+      optionsRef.current?.focus();
   };
 
   const handleDeselect = () => {
@@ -46,9 +65,12 @@ function Dropdown({ name, placeholder, label, options }: DropdownProps) {
 
   return (
     <Wrapper>
-      <Label id="input-wrapper">{label}</Label>
-      <DropdownWrapper>
+      <Label id="input-wrapper" $required={required}>
+        {label}
+      </Label>
+      <DropdownWrapper tabIndex={-1}>
         <InputWrapper
+          ref={wrapperRef}
           onClick={handleClick}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
@@ -61,14 +83,24 @@ function Dropdown({ name, placeholder, label, options }: DropdownProps) {
           >
             {selectedValue ? selectedValue : placeholder}
           </span>
-          <input value={selectedValue} onChange={() => {}} name={name} />
+          <input
+            required={required}
+            value={selectedValue}
+            onChange={() => {}}
+            onFocus={handleInputFocus}
+            name={name}
+            tabIndex={-1}
+          />
           <FontAwesomeIcon
             className={`chevron ${optionsOpen && "open"}`}
             icon={faChevronDown}
           />
-          {optionsOpen && (
-            <Options options={options} onOptionSelect={setSelectedValue} />
-          )}
+          <Options
+            open={optionsOpen}
+            firstOptionRef={optionsRef}
+            options={options}
+            onOptionSelect={setSelectedValue}
+          />
         </InputWrapper>
         {!!selectedValue && (
           <ResetButton icon={faTimes} onClick={handleDeselect} />

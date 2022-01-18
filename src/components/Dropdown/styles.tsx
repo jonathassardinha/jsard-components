@@ -33,7 +33,9 @@ export const InputWrapper = styled.div<WrapperProps>`
   }
 
   input {
-    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
   }
 
   svg {
@@ -55,8 +57,22 @@ export const InputWrapper = styled.div<WrapperProps>`
   }
 `;
 
-export const Label = styled.label`
+export interface LabelProps {
+  $required?: boolean;
+}
+
+export const Label = styled.label<LabelProps>`
   margin-bottom: 8px;
+
+  ${({ $required }) =>
+    $required &&
+    `
+    &::after {
+      content: "*";
+      margin-left: 4px;
+      color: #DD4444;
+    }
+  `}
 `;
 
 export const ResetButton = memo(styled(IconButton)`
