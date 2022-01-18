@@ -1,11 +1,26 @@
-import { FormEvent, ReactNode } from "react";
+import { FormEvent, ReactNode, useEffect } from "react";
 
 export interface FormProviderProps {
   onSubmit: (formData: { [key: string]: string }) => void;
   children: ReactNode;
+  useNativeValidation?: boolean;
 }
 
-function FormProvider({ onSubmit, children }: FormProviderProps) {
+const handleInvalidEvent = (event: Event) => {
+  //prevent the browser from showing default error bubble/ hint
+  event.preventDefault();
+  const target = event.target;
+  if (target && target instanceof HTMLInputElement) {
+    target.focus();
+  }
+  return false;
+};
+
+function FormProvider({
+  onSubmit,
+  children,
+  useNativeValidation,
+}: FormProviderProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -21,6 +36,15 @@ function FormProvider({ onSubmit, children }: FormProviderProps) {
     }
     onSubmit(newFormData);
   };
+
+  useEffect(() => {
+    if (useNativeValidation)
+      document.addEventListener("invalid", handleInvalidEvent, true);
+    return () => {
+      if (useNativeValidation)
+        document.removeEventListener("invalid", handleInvalidEvent, true);
+    };
+  }, [useNativeValidation]);
 
   return (
     // eslint-disable-next-line jsx-a11y/no-redundant-roles
