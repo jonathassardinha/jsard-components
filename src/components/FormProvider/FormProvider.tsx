@@ -1,4 +1,4 @@
-import { FormEvent, ReactNode, useEffect } from "react";
+import { FormEvent, ReactNode } from "react";
 
 export interface FormProviderProps {
   onSubmit: (formData: { [key: string]: string }) => void;
@@ -6,8 +6,12 @@ export interface FormProviderProps {
   useNativeValidation?: boolean;
 }
 
-const handleInvalidEvent = (event: Event) => {
+const handleInvalidEvent = (
+  event: FormEvent<HTMLFormElement>,
+  useNativeValidation?: boolean
+) => {
   //prevent the browser from showing default error bubble/ hint
+  if (useNativeValidation) return;
   event.preventDefault();
   const target = event.target;
   if (target && target instanceof HTMLInputElement) {
@@ -37,18 +41,13 @@ function FormProvider({
     onSubmit(newFormData);
   };
 
-  useEffect(() => {
-    if (useNativeValidation)
-      document.addEventListener("invalid", handleInvalidEvent, true);
-    return () => {
-      if (useNativeValidation)
-        document.removeEventListener("invalid", handleInvalidEvent, true);
-    };
-  }, [useNativeValidation]);
-
   return (
     // eslint-disable-next-line jsx-a11y/no-redundant-roles
-    <form role="form" onSubmit={handleSubmit}>
+    <form
+      onInvalid={(event) => handleInvalidEvent(event, useNativeValidation)}
+      role="form"
+      onSubmit={handleSubmit}
+    >
       {children}
     </form>
   );
