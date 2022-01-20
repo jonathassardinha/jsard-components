@@ -6,6 +6,8 @@ interface OptionsProps {
   options: Array<string>;
   onOptionSelect: Function;
   firstOptionRef?: MutableRefObject<HTMLLIElement | null>;
+  wrapItemText?: boolean;
+  optionsWidth?: string;
 }
 
 function Options({
@@ -13,6 +15,8 @@ function Options({
   firstOptionRef,
   options,
   onOptionSelect,
+  wrapItemText,
+  optionsWidth,
 }: OptionsProps) {
   const optionsRef = useRef<{ element: HTMLLIElement; value: string }[]>([]);
   const currentIndex = useRef(0);
@@ -81,7 +85,7 @@ function Options({
   };
 
   return (
-    <OptionsWrapper tabIndex={-1} $open={open}>
+    <OptionsWrapper tabIndex={-1} $open={open} $optionsWidth={optionsWidth}>
       {options.map((option, index) => (
         <OptionWrapper
           ref={(ref) => handleRef(ref, option, index)}
@@ -89,6 +93,7 @@ function Options({
           key={option}
           onClick={(event) => handleClick(event, option, index)}
           onKeyDown={handleKeyDown}
+          $wrapItemText={wrapItemText}
         >
           {option}
         </OptionWrapper>

@@ -16,6 +16,10 @@ export interface DropdownProps {
   label: string;
   placeholder: string;
   options: Array<string>;
+  optionsProps?: {
+    wrapItemText?: boolean;
+    optionsWidth?: string;
+  };
   required?: boolean;
 }
 
@@ -24,6 +28,7 @@ function Dropdown({
   placeholder,
   label,
   options,
+  optionsProps,
   required,
 }: DropdownProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -96,6 +101,7 @@ function Dropdown({
             icon={faChevronDown}
           />
           <Options
+            {...optionsProps}
             open={optionsOpen}
             firstOptionRef={optionsRef}
             options={options}
