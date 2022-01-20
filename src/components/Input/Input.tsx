@@ -1,12 +1,6 @@
+import Hover from "components/Hover";
 import { ChangeEvent, useState } from "react";
-import {
-  Hover,
-  HoverBackground,
-  HoverWrapper,
-  InputWrapper,
-  Label,
-  StyledInput,
-} from "./styles";
+import { InputWrapper, Label, StyledInput } from "./styles";
 
 export interface NativeInputProps {
   type?: "text" | "number";
@@ -49,12 +43,17 @@ function Input({
   return (
     <InputWrapper>
       {label && <Label htmlFor={name}>{label}</Label>}
-      <HoverWrapper
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+      <Hover
+        focused={focused}
+        hovered={hovered}
+        wrapperProps={{
+          onMouseEnter: () => setHovered(true),
+          onMouseLeave: () => setHovered(false),
+        }}
       >
         <StyledInput
           {...inputProps}
+          type="url"
           id={name}
           name={name}
           value={value || inputValue}
@@ -65,10 +64,7 @@ function Input({
           aria-label={ariaLabel}
           aria-labelledby={ariaLabeledBy}
         />
-        <Hover>
-          <HoverBackground hovered={hovered} focused={focused} />
-        </Hover>
-      </HoverWrapper>
+      </Hover>
     </InputWrapper>
   );
 }
