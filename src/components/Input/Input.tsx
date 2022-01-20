@@ -8,11 +8,20 @@ import {
   StyledInput,
 } from "./styles";
 
+export interface NativeInputProps {
+  type?: "text" | "number";
+  maxLength?: number;
+  minLength?: number;
+  max?: string | number;
+  min?: string | number;
+}
+
 export interface InputProps {
   name: string;
   label?: string;
   placeholder?: string;
   value?: string;
+  inputProps?: NativeInputProps;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   "aria-label"?: string;
   "aria-labelledby"?: string;
@@ -24,6 +33,7 @@ function Input({
   placeholder,
   value,
   onChange,
+  inputProps,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabeledBy,
 }: InputProps) {
@@ -44,6 +54,7 @@ function Input({
         onMouseLeave={() => setHovered(false)}
       >
         <StyledInput
+          {...inputProps}
           id={name}
           name={name}
           value={value || inputValue}
