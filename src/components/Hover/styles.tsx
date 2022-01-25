@@ -18,6 +18,7 @@ export const Wrapper = styled.div`
   width: calc(100%);
   height: calc(100%);
   position: relative;
+  display: flex;
 `;
 
 export const HoverWrapper = styled.div<HoverWrapperProps>`

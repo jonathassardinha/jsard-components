@@ -1,9 +1,9 @@
 import Hover from "components/Hover";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
 import { InputWrapper, Label, StyledInput } from "./styles";
 
 export interface NativeInputProps {
-  type?: "text" | "number";
+  type?: HTMLInputTypeAttribute;
   maxLength?: number;
   minLength?: number;
   max?: string | number;
@@ -29,7 +29,7 @@ function Input({
   onChange,
   inputProps,
   "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabeledBy,
+  "aria-labelledby": ariaLabelledBy,
 }: InputProps) {
   const [focused, setFocused] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -53,7 +53,6 @@ function Input({
       >
         <StyledInput
           {...inputProps}
-          type="url"
           id={name}
           name={name}
           value={value || inputValue}
@@ -62,7 +61,7 @@ function Input({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           aria-label={ariaLabel}
-          aria-labelledby={ariaLabeledBy}
+          aria-labelledby={ariaLabelledBy}
         />
       </Hover>
     </InputWrapper>

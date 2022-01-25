@@ -14,7 +14,11 @@ const handleInvalidEvent = (
   if (useNativeValidation) return;
   event.preventDefault();
   const target = event.target;
-  if (target && target instanceof HTMLInputElement) {
+  if (
+    target &&
+    (target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement)
+  ) {
     target.focus();
   }
   return false;
@@ -35,7 +39,10 @@ function FormProvider({
       index += 1
     ) {
       const element = event.currentTarget.elements.item(index);
-      if (element instanceof HTMLInputElement)
+      if (
+        element instanceof HTMLInputElement ||
+        element instanceof HTMLTextAreaElement
+      )
         newFormData[element.name] = element.value;
     }
     onSubmit(newFormData);
