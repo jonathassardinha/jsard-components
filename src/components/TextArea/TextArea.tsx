@@ -5,8 +5,8 @@ import { StyledTextArea, TextAreaWrapper } from "./styles";
 export interface NativeTextAreaProps {
   maxLength?: number;
   minLength?: number;
-  rows?: string | number;
-  cols?: string | number;
+  rows?: number;
+  cols?: number;
 }
 
 export interface TextAreaProps {
